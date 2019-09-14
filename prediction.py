@@ -27,12 +27,16 @@ def show_plot(dates,prices):
   return
 
 def predict_price(dates,prices,x):
-  linear_mod = linear_model.LinearRegression()
+  # linear_mod = linear_model.LinearRegression()
+  # linear_mod = linear_model.Ridge(alpha=.5)
+  linear_mod = linear_model.Lasso(alpha=0.1)
   dates = np.reshape(dates,(len(dates), 1))
   prices = np.reshape(prices,(len(prices), 1))
   linear_mod.fit(dates, prices)
   predict_price = linear_mod.predict(x)
-  return predict_price[0][0], linear_mod.coef_[0][0], linear_mod.intercept_[0]
+  confidence = linear_mod.score(dates, prices)
+  return predict_price[0], linear_mod.coef_[0], linear_mod.intercept_[0], confidence
+  # return predict_price[0][0], linear_mod.coef_[0][0], linear_mod.intercept_[0]
 
 get_data('BTC-USD.csv')
 print(dates)
@@ -40,6 +44,7 @@ print(prices)
 
 # show_plot(dates,prices)
 date = 29
-predict_price, coefficient, constant = predict_price(dates, prices, [[date]])
+predict_price, coefficient, constant, confidence = predict_price(dates, prices, [[date]])
 print(f'The stock open price is: {predict_price}')
 print(f'The regression coefficent is {coefficient}, and the constant is {constant}')
+print(f'The regression confidence is {confidence}')
