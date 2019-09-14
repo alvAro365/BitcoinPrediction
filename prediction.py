@@ -38,7 +38,7 @@ get_data('BTC-USD.csv')
 print(dates)
 print(prices)
 
-show_plot(dates,prices)
+# show_plot(dates,prices)
 date = 29
 predict_price, coefficient, constant = predict_price(dates, prices, [[date]])
 print(f'The stock open price is: {predict_price}')
